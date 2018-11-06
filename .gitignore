@@ -1,4 +1,0 @@
-.*
-!.gitignore
-www/*
-!www/localhost/
