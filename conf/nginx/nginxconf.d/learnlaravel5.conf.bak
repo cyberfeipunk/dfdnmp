@@ -1,0 +1,39 @@
+server {
+    #laravel官方配置 from https://laravel-china.org/docs/laravel/5.5/deployment/1287
+    listen 80;
+    server_name l5.dingfei.com;
+    root   /var/www/html/learnlaravel5/public/;
+
+    access_log /dev/null;
+    #access_log  /var/log/dnmp/nginx.localhost.access.log  main;
+    error_log  /var/log/dnmp/nginx.learnlaravel5.error.log  warn;
+
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.html index.htm index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass   php54:9000;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
